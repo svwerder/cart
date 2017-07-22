@@ -480,56 +480,7 @@ class BeVariant
      */
     public function getPriceCalculated()
     {
-        $price = $this->getBestPrice();
-
-        if ($this->getParentBeVariant()) {
-            $parentPrice = $this->getParentBeVariant()->getBestPrice();
-        } elseif ($this->getProduct()) {
-            $parentPrice = $this->getProduct()->getBestPrice();
-        } else {
-            $parentPrice = 0;
-        }
-
-        switch ($this->priceCalcMethod) {
-            case 3:
-                $calc_price = -1 * (($price / 100) * ($parentPrice));
-                break;
-            case 5:
-                $calc_price = ($price / 100) * ($parentPrice);
-                break;
-            default:
-                $calc_price = 0;
-        }
-
-        if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cart']['changeVariantDiscount']) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cart']['changeVariantDiscount'] as $funcRef) {
-                if ($funcRef) {
-                    $params = [
-                        'price_calc_method' => $this->priceCalcMethod,
-                        'price' => &$price,
-                        'parent_price' => &$parentPrice,
-                        'calc_price' => &$calc_price,
-                    ];
-
-                    GeneralUtility::callUserFunction($funcRef, $params, $this);
-                }
-            }
-        }
-
-        switch ($this->priceCalcMethod) {
-            case 1:
-                $parentPrice = 0.0;
-                break;
-            case 2:
-                $price = -1 * $price;
-                break;
-            case 4:
-                break;
-            default:
-                $price = 0.0;
-        }
-
-        return $parentPrice + $price + $calc_price;
+        return $this->getBestPriceCalculated();
     }
 
     /**
