@@ -1,3 +1,9 @@
+4.1.5
+    2017-07-22
+    Daniel Lorenz <https://github.com/extcode>
+
+    * TASK #133: refactor MailHandler class
+
 4.0.5
     2017-07-21
     Daniel Lorenz <https://github.com/extcode>

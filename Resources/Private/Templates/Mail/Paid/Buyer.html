@@ -2,7 +2,7 @@
 
 <f:section name="main">
     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
-        <f:translate key="tx_cart.mail.salutation" arguments="{0: billingAddress.salutationOrTitleLastName}"/>
+        <f:translate key="tx_cart.mail.salutation" arguments="{0: orderItem.billingAddress.salutationOrTitleLastName}"/>
     </p>
 
     <f:cObject typoscriptObjectPath="lib.cartMailHeader" />
@@ -22,7 +22,7 @@
         </tr>
     </table>
 
-    <f:render partial="Mail/Address" arguments="{billingAddress: billingAddress, shippingAddress: shippingAddress}"/>
+    <f:render partial="Mail/Address" arguments="{billingAddress: orderItem.billingAddress, shippingAddress: orderItem.shippingAddress}"/>
 
     <table width="600" cellspacing="0" border="0" style="font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
         <tr>
