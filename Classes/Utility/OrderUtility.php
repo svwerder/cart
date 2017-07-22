@@ -1123,8 +1123,8 @@ class OrderUtility
      * @param \Extcode\Cart\Domain\Model\Order\Address $shippingAddress
      */
     protected function setOrderItemAdresses(
-        \Extcode\Cart\Domain\Model\Order\Address $billingAddress,
-        \Extcode\Cart\Domain\Model\Order\Address $shippingAddress
+        \Extcode\Cart\Domain\Model\Order\Address $billingAddress = null,
+        \Extcode\Cart\Domain\Model\Order\Address $shippingAddress = null
     ) {
         $billingAddress->setPid($this->storagePid);
         $this->orderItem->setBillingAddress($billingAddress);

@@ -93,11 +93,11 @@ class CartUtility
      * Restore cart from session or creates a new one
      *
      * @param \Extcode\Cart\Domain\Model\Cart\Cart $cart
-     * @param array $cartSettings
+     * @param string $key
      */
-    public function writeCartToSession($cart, $cartSettings)
+    public function writeCartToSession($cart, $key)
     {
-        $this->sessionHandler->writeToSession($cart, $cartSettings['cart']['pid']);
+        $this->sessionHandler->writeToSession($cart, $key);
     }
 
     /**

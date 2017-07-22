@@ -41,8 +41,8 @@ class SessionHandler implements SingletonInterface
     /**
      * Writes an object into the PHP session
      *
-     * @param \Extcode\Cart\Domain\Model\Cart\Cart $cart Cart
-     * @param string $key Session Key
+     * @param \Extcode\Cart\Domain\Model\Cart\Cart $cart
+     * @param string $key
      *
      * @return SessionHandler $this
      */

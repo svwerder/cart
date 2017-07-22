@@ -89,7 +89,7 @@ if (TYPO3_MODE === 'BE') {
         'Orders',
         '',
         [
-            'Order' => 'list, export, show, updatePayment, updateShipping, generateNumber, generatePdfDocument, downloadPdfDocument',
+            'Backend\Order' => 'list, export, show, updatePayment, updateShipping, generateNumber, generatePdfDocument, downloadPdfDocument',
         ],
         [
             'access' => 'user, group',
@@ -105,7 +105,7 @@ if (TYPO3_MODE === 'BE') {
         'OrderStatistics',
         '',
         [
-            'Order' => 'statistic',
+            'Backend\Order' => 'statistic',
         ],
         [
             'access' => 'user, group',
