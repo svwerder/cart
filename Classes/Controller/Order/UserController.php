@@ -60,9 +60,9 @@ class UserController extends \Extcode\Cart\Controller\Order\ActionController
         $paymentStatusOptions = [];
         $items = $GLOBALS['TCA']['tx_cart_domain_model_order_payment']['columns']['status']['config']['items'];
         foreach ($items as $item) {
-            $paymentStatusOptions[$item[1]] = LocalizationUtility::translate(
+            $paymentStatusOptions[$item[1]] = $this->localizationUtility->translatetranslate(
                 $item[0],
-                $this->extensionName
+                'Cart'
             );
         }
         $this->view->assign('paymentStatusOptions', $paymentStatusOptions);
@@ -70,14 +70,11 @@ class UserController extends \Extcode\Cart\Controller\Order\ActionController
         $shippingStatusOptions = [];
         $items = $GLOBALS['TCA']['tx_cart_domain_model_order_shipping']['columns']['status']['config']['items'];
         foreach ($items as $item) {
-            $shippingStatusOptions[$item[1]] = LocalizationUtility::translate(
+            $shippingStatusOptions[$item[1]] = $this->localizationUtility->translatetranslate(
                 $item[0],
-                $this->extensionName
+                'Cart'
             );
         }
         $this->view->assign('shippingStatusOptions', $shippingStatusOptions);
-
-        $pdfRendererInstalled = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cart_pdf');
-        $this->view->assign('pdfRendererInstalled', $pdfRendererInstalled);
     }
 }

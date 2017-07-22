@@ -99,9 +99,6 @@ class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionCon
 
         $this->assignPaymentStatus();
         $this->assignShippingStatus();
-
-        $pdfRendererInstalled = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cart_pdf');
-        $this->view->assign('pdfRendererInstalled', $pdfRendererInstalled);
     }
 
     /**
@@ -118,7 +115,7 @@ class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionCon
         $paymentStatusOptions = [];
         $items = $GLOBALS['TCA']['tx_cart_domain_model_order_payment']['columns']['status']['config']['items'];
         foreach ($items as $item) {
-            $paymentStatusOptions[$item[1]] = LocalizationUtility::translate(
+            $paymentStatusOptions[$item[1]] = $this->localizationUtility->translate(
                 $item[0],
                 $this->extensionName
             );
@@ -128,7 +125,7 @@ class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionCon
         $shippingStatusOptions = [];
         $items = $GLOBALS['TCA']['tx_cart_domain_model_order_shipping']['columns']['status']['config']['items'];
         foreach ($items as $item) {
-            $shippingStatusOptions[$item[1]] = LocalizationUtility::translate(
+            $shippingStatusOptions[$item[1]] = $this->localizationUtility->translate(
                 $item[0],
                 $this->extensionName
             );
@@ -146,7 +143,7 @@ class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionCon
     {
         $this->paymentRepository->update($payment);
 
-        $msg = LocalizationUtility::translate(
+        $msg = $this->localizationUtility->translate(
             'tx_cart.controller.order.action.update_payment_action.success',
             $this->extensionName
         );
@@ -163,7 +160,7 @@ class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionCon
     {
         $this->shippingRepository->update($shipping);
 
-        $msg = LocalizationUtility::translate(
+        $msg = $this->localizationUtility->translate(
             'tx_cart.controller.order.action.update_shipping_action.success',
             $this->extensionName
         );
@@ -193,7 +190,7 @@ class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionCon
             $this->itemRepository->update($orderItem);
             $this->persistenceManager->persistAll();
 
-            $msg = LocalizationUtility::translate(
+            $msg = $this->localizationUtility->translate(
                 'tx_cart.controller.order.action.generate_number_action.' . $numberType . '.success',
                 $this->extensionName,
                 [
@@ -203,7 +200,7 @@ class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionCon
 
             $this->addFlashMessage($msg);
         } else {
-            $msg = LocalizationUtility::translate(
+            $msg = $this->localizationUtility->translate(
                 'tx_cart.controller.order.action.generate_number_action.' . $numberType . '.already_generated',
                 $this->extensionName
             );
@@ -293,7 +290,7 @@ class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionCon
 
         $paymentStatus = new \stdClass();
         $paymentStatus->key = '';
-        $paymentStatus->value = LocalizationUtility::translate(
+        $paymentStatus->value = $this->localizationUtility->translate(
             'tx_cart_domain_model_order_payment.status.all',
             'Cart'
         );
@@ -303,7 +300,7 @@ class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionCon
         foreach ($entries as $entry) {
             $paymentStatus = new \stdClass();
             $paymentStatus->key = $entry;
-            $paymentStatus->value = LocalizationUtility::translate(
+            $paymentStatus->value = $this->localizationUtility->translate(
                 'tx_cart_domain_model_order_payment.status.' . $entry,
                 'Cart'
             );
@@ -322,7 +319,7 @@ class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionCon
 
         $shippingStatus = new \stdClass();
         $shippingStatus->key = '';
-        $shippingStatus->value = LocalizationUtility::translate(
+        $shippingStatus->value = $this->localizationUtility->translate(
             'tx_cart_domain_model_order_shipping.status.all',
             'Cart'
         );
@@ -332,7 +329,7 @@ class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionCon
         foreach ($entries as $entry) {
             $shippingStatus = new \stdClass();
             $shippingStatus->key = $entry;
-            $shippingStatus->value = LocalizationUtility::translate(
+            $shippingStatus->value = $this->localizationUtility->translate(
                 'tx_cart_domain_model_order_shipping.status.' . $entry,
                 'Cart'
             );

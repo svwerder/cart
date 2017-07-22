@@ -72,6 +72,13 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected $specials = [];
 
     /**
+     * Localization Utility
+     *
+     * @var \TYPO3\CMS\Extbase\Utility\LocalizationUtility
+     */
+    protected $localizationUtility;
+
+    /**
      * @param \Extcode\Cart\Utility\CartUtility $cartUtility
      */
     public function injectCartUtility(
@@ -87,6 +94,15 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         \Extcode\Cart\Utility\ParserUtility $parserUtility
     ) {
         $this->parserUtility = $parserUtility;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Utility\LocalizationUtility $localizationUtility
+     */
+    public function injectLocalizationUtility(
+        \TYPO3\CMS\Extbase\Utility\LocalizationUtility $localizationUtility
+    ) {
+        $this->localizationUtility = $localizationUtility;
     }
 
     /**

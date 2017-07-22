@@ -40,7 +40,7 @@ class ServiceController extends \Extcode\Cart\Controller\Cart\ActionController
                 $this->cart->setPayment($payment);
             } else {
                 $this->addFlashMessage(
-                    \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+                    \TYPO3\CMS\Extbase\Utility\$this->localizationUtility->translatetranslate(
                         'tx_cart.controller.cart.action.set_payment.not_available',
                         $this->extensionName
                     ),
@@ -86,7 +86,7 @@ class ServiceController extends \Extcode\Cart\Controller\Cart\ActionController
                 $this->cart->setShipping($shipping);
             } else {
                 $this->addFlashMessage(
-                    \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+                    \TYPO3\CMS\Extbase\Utility\$this->localizationUtility->translatetranslate(
                         'tx_cart.controller.cart.action.set_shipping.not_available',
                         $this->extensionName
                     ),

@@ -23,27 +23,11 @@ namespace Extcode\Cart\Controller\Product;
 class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
     /**
-     * @param \Extcode\Cart\Utility\CartUtility $cartUtility
-     */
-    public function injectCartUtility(
-        \Extcode\Cart\Utility\CartUtility $cartUtility
-    ) {
-        $this->cartUtility = $cartUtility;
-    }
-
-    /**
      * Cart Utility
      *
      * @var \Extcode\Cart\Utility\CartUtility
      */
     protected $cartUtility;
-
-    /**
-     * productRepository
-     *
-     * @var \Extcode\Cart\Domain\Repository\Product\ProductRepository
-     */
-    protected $productRepository;
 
     /**
      * categoryRepository
@@ -53,11 +37,61 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected $categoryRepository;
 
     /**
+     * productRepository
+     *
+     * @var \Extcode\Cart\Domain\Repository\Product\ProductRepository
+     */
+    protected $productRepository;
+
+    /**
      * Plugin Settings
      *
      * @var array
      */
     protected $pluginSettings;
+
+    /**
+     * Localization Utility
+     *
+     * @var \TYPO3\CMS\Extbase\Utility\LocalizationUtility
+     */
+    protected $localizationUtility;
+
+    /**
+     * @param \Extcode\Cart\Utility\CartUtility $cartUtility
+     */
+    public function injectCartUtility(
+        \Extcode\Cart\Utility\CartUtility $cartUtility
+    ) {
+        $this->cartUtility = $cartUtility;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Utility\LocalizationUtility $localizationUtility
+     */
+    public function injectLocalizationUtility(
+        \TYPO3\CMS\Extbase\Utility\LocalizationUtility $localizationUtility
+    ) {
+        $this->localizationUtility = $localizationUtility;
+    }
+
+    /**
+     * @param \Extcode\Cart\Domain\Repository\CategoryRepository $categoryRepository
+     */
+    public function injectCategoryRepository(
+        \Extcode\Cart\Domain\Repository\CategoryRepository $categoryRepository
+    ) {
+        $this->categoryRepository = $categoryRepository;
+    }
+
+    /**
+     * @param \Extcode\Cart\Domain\Repository\Product\ProductRepository $productRepository
+     */
+    public function injectProductRepository(
+        \Extcode\Cart\Domain\Repository\Product\ProductRepository $productRepository
+    ) {
+        $this->productRepository = $productRepository;
+    }
 
     /**
      * Action initializer
@@ -82,38 +116,20 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     }
 
     /**
-     * @param \Extcode\Cart\Domain\Repository\Product\ProductRepository $productRepository
-     */
-    public function injectProductRepository(
-        \Extcode\Cart\Domain\Repository\Product\ProductRepository $productRepository
-    ) {
-        $this->productRepository = $productRepository;
-    }
-
-    /**
-     * @param \Extcode\Cart\Domain\Repository\CategoryRepository $categoryRepository
-     */
-    public function injectCategoryRepository(
-        \Extcode\Cart\Domain\Repository\CategoryRepository $categoryRepository
-    ) {
-        $this->categoryRepository = $categoryRepository;
-    }
-
-    /**
      * assigns currency translation array to view
      */
     protected function assignCurrencyTranslationData()
     {
-        $currencyTranslationData = [];
+        $currencyTranslations = [];
 
         $cart = $this->cartUtility->getCartFromSession($this->settings['cart'], $this->pluginSettings);
 
         if ($cart) {
-            $currencyTranslationData['currencyCode'] = $cart->getCurrencyCode();
-            $currencyTranslationData['currencySign'] = $cart->getCurrencySign();
-            $currencyTranslationData['currencyTranslation'] = $cart->getCurrencyTranslation();
+            $currencyTranslations['currencyCode'] = $cart->getCurrencyCode();
+            $currencyTranslations['currencySign'] = $cart->getCurrencySign();
+            $currencyTranslations['currencyTranslation'] = $cart->getCurrencyTranslation();
         }
 
-        $this->view->assign('currencyTranslationData', $currencyTranslationData);
+        $this->view->assign('currencyTranslationData', $currencyTranslations);
     }
 }

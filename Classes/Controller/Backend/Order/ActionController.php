@@ -30,11 +30,27 @@ class ActionController extends \Extcode\Cart\Controller\Backend\ActionController
     protected $itemRepository;
 
     /**
+     * Localization Utility
+     *
+     * @var \TYPO3\CMS\Extbase\Utility\LocalizationUtility
+     */
+    protected $localizationUtility;
+
+    /**
      * @param \Extcode\Cart\Domain\Repository\Order\ItemRepository $itemRepository
      */
     public function injectItemRepository(
         \Extcode\Cart\Domain\Repository\Order\ItemRepository $itemRepository
     ) {
         $this->itemRepository = $itemRepository;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Utility\LocalizationUtility $localizationUtility
+     */
+    public function injectLocalizationUtility(
+        \TYPO3\CMS\Extbase\Utility\LocalizationUtility $localizationUtility
+    ) {
+        $this->localizationUtility = $localizationUtility;
     }
 }

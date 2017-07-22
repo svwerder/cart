@@ -43,8 +43,5 @@ class ExportController extends \Extcode\Cart\Controller\Backend\Order\ActionCont
 
         $this->view->assign('searchArguments', $this->searchArguments);
         $this->view->assign('orderItems', $orderItems);
-
-        $pdfRendererInstalled = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cart_pdf');
-        $this->view->assign('pdfRendererInstalled', $pdfRendererInstalled);
     }
 }
