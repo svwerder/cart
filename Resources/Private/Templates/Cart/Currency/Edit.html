@@ -3,7 +3,8 @@
 <f:if condition="{settings.currencies -> f:count()} > 1">
     <f:form class="form form-currency"
             name="currency"
-            action="updateCurrency"
+            conroller="Cart\Currency"
+            action="update"
             pageType="2278003"
             method="post">
         <div class="row top-buffer">

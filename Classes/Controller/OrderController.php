@@ -20,6 +20,6 @@ namespace Extcode\Cart\Controller;
  *
  * @author Daniel Lorenz <ext.cart@extco.de>
  */
-class OrderController extends \Extcode\Cart\Controller\Frontend\Order\PaymentController
+class OrderController extends \Extcode\Cart\Controller\Order\PaymentController
 {
 }

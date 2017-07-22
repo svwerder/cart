@@ -15,7 +15,8 @@
                                 {payment.name}
                             </f:then>
                             <f:else>
-                                <f:link.action action="setPayment"
+                                <f:link.action controller="Cart\Service"
+                                               action="setPayment"
                                                arguments="{paymentId:payment.id}"
                                                pageType="2278001"
                                                class="setPayment">

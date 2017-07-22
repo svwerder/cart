@@ -4,8 +4,8 @@
     {settings.title}
     <div class="cart">
         <f:form pageUid="{settings.cartPageId}"
-                action="addProduct"
-                controller="Cart">
+                controller="Cart\Product"
+                action="add">
             <input type="hidden" value="{contentId}" name="tx_cart_cart[contentId]">
             <input type="text" value="1" name="tx_cart_cart[quantity]">
             <f:form.submit class="btn btn-default" value="{f:translate(key: 'tx_cart.add_product', default: '[add product]')}"/>

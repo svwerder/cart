@@ -20,11 +20,21 @@ defined('TYPO3_MODE') or die();
     'Extcode.' . $_EXTKEY,
     'Cart',
     [
-        'Cart' => 'showCart, clearCart, addProduct, removeProduct, addCoupon, removeCoupon, setShipping, setPayment, updateCountry, updateCurrency, updateCart, orderCart',
+        'Cart' => 'showCart, clearCart, updateCountry, updateCurrency, updateCart',
+        'Cart\Order' => 'orderCart',
+        'Cart\Coupon' => 'addCoupon, removeCoupon',
+        'Cart\Currency' => 'update',
+        'Cart\Product' => 'add, remove',
+        'Cart\Service' => 'setShipping, setPayment, ',
         'Order' => 'paymentSuccess, paymentCancel',
     ],
     [
-        'Cart' => 'showCart, clearCart, addProduct, removeProduct, addCoupon, removeCoupon, setShipping, setPayment, updateCountry, updateCurrency, updateCart, orderCart',
+        'Cart' => 'showCart, clearCart, updateCountry, updateCurrency, updateCart',
+        'Cart\Order' => 'orderCart',
+        'Cart\Coupon' => 'addCoupon, removeCoupon',
+        'Cart\Currency' => 'update',
+        'Cart\Product' => 'add, remove',
+        'Cart\Service' => 'setShipping, setPayment',
         'Order' => 'paymentSuccess, paymentCancel',
     ]
 );
@@ -33,10 +43,10 @@ defined('TYPO3_MODE') or die();
     'Extcode.' . $_EXTKEY,
     'Currency',
     [
-        'Cart' => 'editCurrency, updateCurrency',
+        'Cart\Currency' => 'edit, update',
     ],
     [
-        'Cart' => 'editCurrency, updateCurrency',
+        'Cart\Currency' => 'edit, update',
     ]
 );
 

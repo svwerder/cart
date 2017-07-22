@@ -1,6 +1,6 @@
 <?php
 
-namespace Extcode\Cart\Controller\Frontend\Cart;
+namespace Extcode\Cart\Controller\Cart;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -20,35 +20,14 @@ namespace Extcode\Cart\Controller\Frontend\Cart;
  *
  * @author Daniel Lorenz <ext.cart@extco.de>
  */
-class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class OrderController extends \Extcode\Cart\Controller\Cart\ActionController
 {
-    /**
-     * Cart Utility
-     *
-     * @var \Extcode\Cart\Utility\CartUtility
-     */
-    protected $cartUtility;
-
     /**
      * Order Utility
      *
      * @var \Extcode\Cart\Utility\OrderUtility
      */
     protected $orderUtility;
-
-    /**
-     * Parser Utility
-     *
-     * @var \Extcode\Cart\Utility\ParserUtility
-     */
-    protected $parserUtility;
-
-    /**
-     * Cart
-     *
-     * @var \Extcode\Cart\Domain\Model\Cart\Cart
-     */
-    protected $cart;
 
     /**
      * GpValues
@@ -65,37 +44,12 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     protected $taxClasses = [];
 
     /**
-     * Plugin Settings
-     *
-     * @var array
-     */
-    protected $pluginSettings;
-
-    /**
-     * @param \Extcode\Cart\Utility\CartUtility $cartUtility
-     */
-    public function injectCartUtility(
-        \Extcode\Cart\Utility\CartUtility $cartUtility
-    ) {
-        $this->cartUtility = $cartUtility;
-    }
-
-    /**
      * @param \Extcode\Cart\Utility\OrderUtility $orderUtility
      */
     public function injectOrderUtility(
         \Extcode\Cart\Utility\OrderUtility $orderUtility
     ) {
         $this->orderUtility = $orderUtility;
-    }
-
-    /**
-     * @param \Extcode\Cart\Utility\ParserUtility $parserUtility
-     */
-    public function injectParserUtility(
-        \Extcode\Cart\Utility\ParserUtility $parserUtility
-    ) {
-        $this->parserUtility = $parserUtility;
     }
 
     /**
@@ -117,21 +71,6 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $errorMsg = parent::getErrorFlashMessage();
 
         return $errorMsg;
-    }
-
-    /**
-     * Action initialize
-     */
-    public function initializeAction()
-    {
-        $this->pluginSettings = $this->configurationManager->getConfiguration(
-            \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
-            'Cart'
-        );
-
-        if (TYPO3_MODE === 'BE') {
-            die();
-        }
     }
 
     public function initializeOrderCartAction()

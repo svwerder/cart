@@ -5,7 +5,7 @@
 
     <f:form pageUid="{pid}"
             id="add-product-form"
-            extensionName="Cart" pluginName="Cart" controller="Cart" action="addProduct"
+            extensionName="Cart" pluginName="Cart" controller="Cart\Product" action="add"
             method="post"
             pageType="{f:if(condition:'{settings.addToCartByAjax}', then:'2278001', else:'')}"
             additionalAttributes="{data-remote: '{settings.addToCartByAjax}'}">
