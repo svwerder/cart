@@ -96,7 +96,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         $key = $this->arguments['translationKey'];
 
         if ($key != null) {
-            $output = \TYPO3\CMS\Extbase\Utility\$this->localizationUtility->translatetranslate(
+            $output = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
                 $key . '.' . htmlspecialchars($value),
                 'Cart'
             );

@@ -60,9 +60,9 @@ class OrderController extends \Extcode\Cart\Controller\Cart\ActionController
         $getValidationResults = $this->arguments->getValidationResults();
 
         if ($getValidationResults->hasErrors()) {
-            $errorMsg = \TYPO3\CMS\Extbase\Utility\$this->localizationUtility->translatetranslate(
+            $errorMsg = $this->localizationUtility->translate(
                 'tx_cart.error.validation',
-                $this->extensionName
+                'Cart'
             );
 
             return $errorMsg;

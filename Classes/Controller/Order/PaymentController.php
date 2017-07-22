@@ -14,7 +14,6 @@ namespace Extcode\Cart\Controller\Frontend\Order;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Payment Controller
@@ -102,7 +101,7 @@ class PaymentController extends \Extcode\Cart\Controller\Order\ActionController
                 $this->persistenceManager->persistAll();
 
                 $this->addFlashMessage(
-                    $this->localizationUtility->translatetranslate(
+                    $this->localizationUtility->translate(
                         'tx_cart.controller.order.action.payment_success.successfully_paid',
                         'Cart'
                     ),
@@ -119,7 +118,7 @@ class PaymentController extends \Extcode\Cart\Controller\Order\ActionController
                 $this->view->assign('orderItem', $orderItem);
             } else {
                 $this->addFlashMessage(
-                    $this->localizationUtility->translatetranslate(
+                    $this->localizationUtility->translate(
                         'tx_cart.controller.order.action.payment_success.error_occured',
                         'Cart'
                     ),
@@ -129,7 +128,7 @@ class PaymentController extends \Extcode\Cart\Controller\Order\ActionController
             }
         } else {
             $this->addFlashMessage(
-                $this->localizationUtility->translatetranslate(
+                $this->localizationUtility->translate(
                     'tx_cart.controller.order.action.payment_success.access_denied',
                     'Cart'
                 ),
@@ -165,7 +164,7 @@ class PaymentController extends \Extcode\Cart\Controller\Order\ActionController
                 $this->persistenceManager->persistAll();
 
                 $this->addFlashMessage(
-                    $this->localizationUtility->translatetranslate(
+                    $this->localizationUtility->translate(
                         'tx_cart.controller.order.action.payment_cancel.successfully_canceled',
                         'Cart'
                     ),
@@ -178,7 +177,7 @@ class PaymentController extends \Extcode\Cart\Controller\Order\ActionController
                 $this->view->assign('orderItem', $orderItem);
             } else {
                 $this->addFlashMessage(
-                    $this->localizationUtility->translatetranslate(
+                    $this->localizationUtility->translate(
                         'tx_cart.controller.order.action.payment_cancel.error_occured',
                         'Cart'
                     ),
@@ -188,7 +187,7 @@ class PaymentController extends \Extcode\Cart\Controller\Order\ActionController
             }
         } else {
             $this->addFlashMessage(
-                $this->localizationUtility->translatetranslate(
+                $this->localizationUtility->translate(
                     'tx_cart.controller.order.action.payment_cancel.access_denied',
                     'Cart'
                 ),

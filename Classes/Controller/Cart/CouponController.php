@@ -65,9 +65,9 @@ class CouponController extends \Extcode\Cart\Controller\Cart\ActionController
 
                 if ($couponWasAdded == 1) {
                     $this->addFlashMessage(
-                        \TYPO3\CMS\Extbase\Utility\$this->localizationUtility->translatetranslate(
+                        $this->localizationUtility->translate(
                             'tx_cart.ok.coupon.added',
-                            $this->extensionName
+                            'Cart'
                         ),
                         '',
                         \TYPO3\CMS\Core\Messaging\AbstractMessage::OK,
@@ -76,9 +76,9 @@ class CouponController extends \Extcode\Cart\Controller\Cart\ActionController
                 }
                 if ($couponWasAdded == -1) {
                     $this->addFlashMessage(
-                        \TYPO3\CMS\Extbase\Utility\$this->localizationUtility->translatetranslate(
+                        $this->localizationUtility->translate(
                             'tx_cart.error.coupon.already_added',
-                            $this->extensionName
+                            'Cart'
                         ),
                         '',
                         \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING,
@@ -87,9 +87,9 @@ class CouponController extends \Extcode\Cart\Controller\Cart\ActionController
                 }
                 if ($couponWasAdded == -2) {
                     $this->addFlashMessage(
-                        \TYPO3\CMS\Extbase\Utility\$this->localizationUtility->translatetranslate(
+                        $this->localizationUtility->translate(
                             'tx_cart.error.coupon.not_combinable',
-                            $this->extensionName
+                            'Cart'
                         ),
                         '',
                         \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING,
@@ -98,9 +98,9 @@ class CouponController extends \Extcode\Cart\Controller\Cart\ActionController
                 }
             } else {
                 $this->addFlashMessage(
-                    \TYPO3\CMS\Extbase\Utility\$this->localizationUtility->translatetranslate(
+                    $this->localizationUtility->translate(
                         'tx_cart.error.coupon.not_accepted',
-                        $this->extensionName
+                        'Cart'
                     ),
                     '',
                     \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING,
@@ -126,9 +126,9 @@ class CouponController extends \Extcode\Cart\Controller\Cart\ActionController
 
             if ($couponWasRemoved == 1) {
                 $this->addFlashMessage(
-                    \TYPO3\CMS\Extbase\Utility\$this->localizationUtility->translatetranslate(
+                    $this->localizationUtility->translate(
                         'tx_cart.ok.coupon.removed',
-                        $this->extensionName
+                        'Cart'
                     ),
                     '',
                     \TYPO3\CMS\Core\Messaging\AbstractMessage::OK,
@@ -137,9 +137,9 @@ class CouponController extends \Extcode\Cart\Controller\Cart\ActionController
             }
             if ($couponWasRemoved == -1) {
                 $this->addFlashMessage(
-                    \TYPO3\CMS\Extbase\Utility\$this->localizationUtility->translatetranslate(
+                    $this->localizationUtility->translate(
                         'tx_cart.error.coupon.not_found',
-                        $this->extensionName
+                        'Cart'
                     ),
                     '',
                     \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING,

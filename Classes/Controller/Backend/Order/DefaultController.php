@@ -15,7 +15,6 @@ namespace Extcode\Cart\Controller\Backend\Order;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Default Controller
@@ -117,7 +116,7 @@ class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionCon
         foreach ($items as $item) {
             $paymentStatusOptions[$item[1]] = $this->localizationUtility->translate(
                 $item[0],
-                $this->extensionName
+                'Cart'
             );
         }
         $this->view->assign('paymentStatusOptions', $paymentStatusOptions);
@@ -127,7 +126,7 @@ class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionCon
         foreach ($items as $item) {
             $shippingStatusOptions[$item[1]] = $this->localizationUtility->translate(
                 $item[0],
-                $this->extensionName
+                'Cart'
             );
         }
         $this->view->assign('shippingStatusOptions', $shippingStatusOptions);
@@ -145,7 +144,7 @@ class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionCon
 
         $msg = $this->localizationUtility->translate(
             'tx_cart.controller.order.action.update_payment_action.success',
-            $this->extensionName
+            'Cart'
         );
 
         $this->addFlashMessage($msg);
@@ -162,7 +161,7 @@ class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionCon
 
         $msg = $this->localizationUtility->translate(
             'tx_cart.controller.order.action.update_shipping_action.success',
-            $this->extensionName
+            'Cart'
         );
 
         $this->addFlashMessage($msg);
@@ -192,7 +191,7 @@ class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionCon
 
             $msg = $this->localizationUtility->translate(
                 'tx_cart.controller.order.action.generate_number_action.' . $numberType . '.success',
-                $this->extensionName,
+                'Cart',
                 [
                     0 => $generatedNumber,
                 ]
@@ -202,7 +201,7 @@ class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionCon
         } else {
             $msg = $this->localizationUtility->translate(
                 'tx_cart.controller.order.action.generate_number_action.' . $numberType . '.already_generated',
-                $this->extensionName
+                'Cart'
             );
 
             $this->addFlashMessage($msg, '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);

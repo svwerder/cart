@@ -14,7 +14,6 @@ namespace Extcode\Cart\Controller\Order;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Order Controller
@@ -60,7 +59,7 @@ class UserController extends \Extcode\Cart\Controller\Order\ActionController
         $paymentStatusOptions = [];
         $items = $GLOBALS['TCA']['tx_cart_domain_model_order_payment']['columns']['status']['config']['items'];
         foreach ($items as $item) {
-            $paymentStatusOptions[$item[1]] = $this->localizationUtility->translatetranslate(
+            $paymentStatusOptions[$item[1]] = $this->localizationUtility->translate(
                 $item[0],
                 'Cart'
             );
@@ -70,7 +69,7 @@ class UserController extends \Extcode\Cart\Controller\Order\ActionController
         $shippingStatusOptions = [];
         $items = $GLOBALS['TCA']['tx_cart_domain_model_order_shipping']['columns']['status']['config']['items'];
         foreach ($items as $item) {
-            $shippingStatusOptions[$item[1]] = $this->localizationUtility->translatetranslate(
+            $shippingStatusOptions[$item[1]] = $this->localizationUtility->translate(
                 $item[0],
                 'Cart'
             );
