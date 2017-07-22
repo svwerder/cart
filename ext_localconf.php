@@ -8,11 +8,13 @@ defined('TYPO3_MODE') or die();
     'Extcode.' . $_EXTKEY,
     'MiniCart',
     [
-        'Cart' => 'showMiniCart, updateCurrency',
+        'Cart\Default' => 'showMiniCart',
+        'Cart\Currency' => 'update',
     ],
     // non-cacheable actions
     [
-        'Cart' => 'showMiniCart, updateCurrency',
+        'Cart\Default' => 'showMiniCart',
+        'Cart\Currency' => 'update',
     ]
 );
 
@@ -20,22 +22,22 @@ defined('TYPO3_MODE') or die();
     'Extcode.' . $_EXTKEY,
     'Cart',
     [
-        'Cart' => 'showCart, clearCart, updateCountry, updateCurrency, updateCart',
+        'Cart\Default' => 'showCart, clearCart, updateCountry, updateCart',
         'Cart\Order' => 'orderCart',
         'Cart\Coupon' => 'addCoupon, removeCoupon',
         'Cart\Currency' => 'update',
         'Cart\Product' => 'add, remove',
         'Cart\Service' => 'setShipping, setPayment, ',
-        'Order' => 'paymentSuccess, paymentCancel',
+        'Order\Payment' => 'paymentSuccess, paymentCancel',
     ],
     [
-        'Cart' => 'showCart, clearCart, updateCountry, updateCurrency, updateCart',
+        'Cart\Default' => 'showCart, clearCart, updateCountry, updateCart',
         'Cart\Order' => 'orderCart',
         'Cart\Coupon' => 'addCoupon, removeCoupon',
         'Cart\Currency' => 'update',
         'Cart\Product' => 'add, remove',
         'Cart\Service' => 'setShipping, setPayment',
-        'Order' => 'paymentSuccess, paymentCancel',
+        'Order\Payment' => 'paymentSuccess, paymentCancel',
     ]
 );
 
@@ -54,10 +56,11 @@ defined('TYPO3_MODE') or die();
     'Extcode.' . $_EXTKEY,
     'Product',
     [
-        'Product' => 'show, list, teaser, showForm',
+        'Product\Default' => 'show, list, showForm',
+        'Product\Teaser' => 'show',
     ],
     [
-        'Product' => 'list, showForm',
+        'Product\Default' => 'list, showForm',
     ]
 );
 
@@ -65,10 +68,10 @@ defined('TYPO3_MODE') or die();
     'Extcode.' . $_EXTKEY,
     'ProductPartial',
     [
-        'Product' => 'showForm',
+        'Product\Default' => 'showForm',
     ],
     [
-        'Product' => 'showForm',
+        'Product\Default' => 'showForm',
     ]
 );
 
@@ -76,10 +79,10 @@ defined('TYPO3_MODE') or die();
     'Extcode.' . $_EXTKEY,
     'FlexProduct',
     [
-        'Product' => 'flexform',
+        'Product\Flexform' => 'show',
     ],
     [
-        'Product' => '',
+        'Product\Flexform' => '',
     ]
 );
 
@@ -87,10 +90,10 @@ defined('TYPO3_MODE') or die();
     'Extcode.' . $_EXTKEY,
     'Order',
     [
-        'Order' => 'list, show',
+        'Order\Default' => 'list, show',
     ],
     [
-        'Order' => 'list, show',
+        'Order\Default' => 'list, show',
     ]
 );
 

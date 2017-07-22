@@ -89,7 +89,9 @@ if (TYPO3_MODE === 'BE') {
         'Orders',
         '',
         [
-            'Backend\Order' => 'list, export, show, updatePayment, updateShipping, generateNumber, generatePdfDocument, downloadPdfDocument',
+            'Backend\Order\Default' => 'list, show, updatePayment, updateShipping, generateNumber',
+            'Backend\Order\Document' => 'generatePdfDocument, downloadPdfDocument',
+            'Backend\Order\Export' => 'export',
         ],
         [
             'access' => 'user, group',
@@ -105,7 +107,7 @@ if (TYPO3_MODE === 'BE') {
         'OrderStatistics',
         '',
         [
-            'Backend\Order' => 'statistic',
+            'Backend\Order\Statistic' => 'show',
         ],
         [
             'access' => 'user, group',
@@ -121,8 +123,7 @@ if (TYPO3_MODE === 'BE') {
         'Products',
         '',
         [
-            'Product' => 'list, show,',
-            'Variant' => 'list, show, edit, update',
+            'Backend\Product\Default' => 'list, show',
         ],
         [
             'access' => 'user, group',

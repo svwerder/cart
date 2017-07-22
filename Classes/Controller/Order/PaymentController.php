@@ -21,7 +21,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  *
  * @author Daniel Lorenz <ext.cart@extco.de>
  */
-class PaymentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class PaymentController extends \Extcode\Cart\Controller\Order\ActionController
 {
     /**
      * Persistence Manager
@@ -50,13 +50,6 @@ class PaymentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     protected $cart = null;
 
     /**
-     * Plugin Settings
-     *
-     * @var array
-     */
-    protected $pluginSettings;
-
-    /**
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager
      */
     public function injectPersistenceManager(
@@ -81,18 +74,6 @@ class PaymentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         \Extcode\Cart\Domain\Repository\Order\PaymentRepository $paymentRepository
     ) {
         $this->paymentRepository = $paymentRepository;
-    }
-
-    /**
-     * Initialize Action
-     */
-    protected function initializeAction()
-    {
-        $this->pluginSettings =
-            $this->configurationManager->getConfiguration(
-                \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK .
-                'Cart'
-            );
     }
 
     /**

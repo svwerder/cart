@@ -1,6 +1,6 @@
 <?php
 
-namespace Extcode\Cart\Controller;
+namespace Extcode\Cart\Controller\Product;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -16,10 +16,20 @@ namespace Extcode\Cart\Controller;
  */
 
 /**
- * Order Controller
+ * Teaser Controller
  *
  * @author Daniel Lorenz <ext.cart@extco.de>
  */
-class OrderController extends \Extcode\Cart\Controller\Order\PaymentController
+class TeaserController extends \Extcode\Cart\Controller\Product\ActionController
 {
+    /**
+     * Action Show
+     */
+    public function showAction()
+    {
+        $products = $this->productRepository->findByUids($this->settings['productUids']);
+        $this->view->assign('products', $products);
+
+        $this->assignCurrencyTranslationData();
+    }
 }

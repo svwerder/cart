@@ -1,6 +1,6 @@
 <?php
 
-namespace Extcode\Cart\Controller\Backend;
+namespace Extcode\Cart\Controller\Backend\Order;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -18,26 +18,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
- * Order Controller
+ * Default Controller
  *
  * @author Daniel Lorenz <ext.cart@extco.de>
  */
-class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class DefaultController extends \Extcode\Cart\Controller\Backend\Order\ActionController
 {
-    /**
-     * Persistence Manager
-     *
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-     */
-    protected $persistenceManager;
-
-    /**
-     * Order Item Repository
-     *
-     * @var \Extcode\Cart\Domain\Repository\Order\ItemRepository
-     */
-    protected $itemRepository;
-
     /**
      * Order Payment Repository
      *
@@ -58,31 +44,6 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @var \Extcode\Cart\Utility\OrderUtility
      */
     protected $orderUtility;
-
-    /**
-     * Search Arguments
-     *
-     * @var array
-     */
-    protected $searchArguments;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager
-     */
-    public function injectPersistenceManager(
-        \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager
-    ) {
-        $this->persistenceManager = $persistenceManager;
-    }
-
-    /**
-     * @param \Extcode\Cart\Domain\Repository\Order\ItemRepository $itemRepository
-     */
-    public function injectItemRepository(
-        \Extcode\Cart\Domain\Repository\Order\ItemRepository $itemRepository
-    ) {
-        $this->itemRepository = $itemRepository;
-    }
 
     /**
      * @param \Extcode\Cart\Domain\Repository\Order\PaymentRepository $paymentRepository
@@ -112,43 +73,6 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     }
 
     /**
-     * Initialize Action
-     */
-    protected function initializeAction()
-    {
-        if (TYPO3_MODE === 'BE') {
-            $pageId = (int)(GeneralUtility::_GET('id')) ? GeneralUtility::_GET('id') : 1;
-
-            $this->pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess(
-                $pageId,
-                $GLOBALS['BE_USER']->getPagePermsClause(1)
-            );
-
-            $configurationManager = $this->objectManager->get(
-                \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class
-            );
-
-            $frameworkConf =
-                $configurationManager->getConfiguration(
-                    \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
-                );
-            $persistenceConf = ['persistence' => ['storagePid' => $pageId]];
-            $configurationManager->setConfiguration(array_merge($frameworkConf, $persistenceConf));
-
-            $this->settings = $configurationManager->getConfiguration(
-                \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
-                $this->request->getControllerExtensionName(),
-                $this->request->getPluginName()
-            );
-
-            $arguments = $this->request->getArguments();
-            if ($arguments['search']) {
-                $this->searchArguments = $arguments['search'];
-            }
-        }
-    }
-
-    /**
      * Initialize Update Action
      */
     public function initializeUpdateAction()
@@ -164,84 +88,17 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     }
 
     /**
-     * Statistic Action
-     */
-    public function statisticAction()
-    {
-        $orderItems = $this->itemRepository->findAll($this->searchArguments);
-
-        $this->view->assign('searchArguments', $this->searchArguments);
-
-        $statistics = [
-            'gross' => 0.0,
-            'net' => 0.0,
-            'orderItemCount' => count($orderItems),
-            'orderProductCount' => 0,
-        ];
-
-        foreach ($orderItems as $orderItem) {
-            /** @var \Extcode\Cart\Domain\Model\Order\Item $orderItem */
-            $statistics['orderItemGross'] += $orderItem->getGross();
-            $statistics['orderItemNet'] += $orderItem->getNet();
-
-            $orderProducts = $orderItem->getProducts();
-
-            if ($orderProducts) {
-                foreach ($orderProducts as $orderProduct) {
-                    $statistics['orderProductCount'] += $orderProduct->getCount();
-                }
-            }
-        }
-
-        if ($statistics['orderItemCount'] > 0) {
-            $statistics['orderItemAverageGross'] = $statistics['orderItemGross'] / $statistics['orderItemCount'];
-            $statistics['orderItemAverageNet'] = $statistics['orderItemNet'] / $statistics['orderItemCount'];
-        }
-
-        $this->view->assign('statistics', $statistics);
-    }
-
-    /**
      * List Action
      */
     public function listAction()
     {
-        if (TYPO3_MODE === 'BE') {
-            $orderItems = $this->itemRepository->findAll($this->searchArguments);
-        } else {
-            $feUser = (int)$GLOBALS['TSFE']->fe_user->user['uid'];
-            $orderItems = $this->itemRepository->findByFeUser($feUser);
-        }
-        $this->view->assign('searchArguments', $this->searchArguments);
-        $this->view->assign('orderItems', $orderItems);
-
-        $this->view->assign('paymentStatus', $this->getPaymentStatus());
-        $this->view->assign('shippingStatus', $this->getShippingStatus());
-
-        $pdfRendererInstalled = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cart_pdf');
-        $this->view->assign('pdfRendererInstalled', $pdfRendererInstalled);
-    }
-
-    /**
-     * Export Action
-     */
-    public function exportAction()
-    {
-        $format = $this->request->getFormat();
-
-        if ($format == 'csv') {
-            $title = 'Order-Export-' . date('Y-m-d_H-i');
-            $filename = $title . '.' . $format;
-
-            $this->response->setHeader('Content-Type', 'text/' . $format, true);
-            $this->response->setHeader('Content-Description', 'File transfer', true);
-            $this->response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"', true);
-        }
-
         $orderItems = $this->itemRepository->findAll($this->searchArguments);
+        $this->view->assign('orderItems', $orderItems);
 
         $this->view->assign('searchArguments', $this->searchArguments);
-        $this->view->assign('orderItems', $orderItems);
+
+        $this->assignPaymentStatus();
+        $this->assignShippingStatus();
 
         $pdfRendererInstalled = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cart_pdf');
         $this->view->assign('pdfRendererInstalled', $pdfRendererInstalled);
@@ -256,18 +113,6 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     public function showAction(\Extcode\Cart\Domain\Model\Order\Item $orderItem)
     {
-        if (TYPO3_MODE === 'FE') {
-            $feUser = (int)$GLOBALS['TSFE']->fe_user->user['uid'];
-            if ($orderItem->getFeUser() != $feUser) {
-                $this->addFlashMessage(
-                    'Access denied.',
-                    '',
-                    \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR
-                );
-                $this->redirect('list');
-            }
-        }
-
         $this->view->assign('orderItem', $orderItem);
 
         $paymentStatusOptions = [];
@@ -370,84 +215,6 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     }
 
     /**
-     * Generate Invoice Document Action
-     *
-     * @param \Extcode\Cart\Domain\Model\Order\Item $orderItem
-     * @param string $pdfType
-     */
-    public function generatePdfDocumentAction(\Extcode\Cart\Domain\Model\Order\Item $orderItem, $pdfType)
-    {
-        if ($pdfType == 'invoice') {
-            if (!$orderItem->getInvoiceNumber()) {
-                $invoiceNumber = $this->generateInvoiceNumber($orderItem);
-                $orderItem->setInvoiceNumber($invoiceNumber);
-                $orderItem->setInvoiceDate(new \DateTime());
-
-                $this->addFlashMessage(
-                    'Invoice Number was generated.',
-                    '',
-                    \TYPO3\CMS\Core\Messaging\AbstractMessage::OK,
-                    true
-                );
-
-                $this->itemRepository->update($orderItem);
-
-                $this->persistenceManager->persistAll();
-            }
-        }
-
-        $this->generatePdfDocument($orderItem, $pdfType);
-
-        $this->itemRepository->update($orderItem);
-        $this->persistenceManager->persistAll();
-
-        $msg = ucfirst($pdfType) . '-PDF-Document was generated.';
-        $this->addFlashMessage($msg);
-
-        $this->redirect('show', null, null, ['orderItem' => $orderItem]);
-    }
-
-    /**
-     * Download Pdf Document Action
-     *
-     * @param \Extcode\Cart\Domain\Model\Order\Item $orderItem
-     * @param string $pdfType
-     */
-    public function downloadPdfDocumentAction(\Extcode\Cart\Domain\Model\Order\Item $orderItem, $pdfType)
-    {
-        $getter = 'get' . ucfirst($pdfType) . 'Pdfs';
-        $pdfs = $orderItem->$getter();
-        $originalPdf = end($pdfs->toArray())->getOriginalResource();
-        $file = PATH_site . $originalPdf->getPublicUrl();
-
-        $fileName = $originalPdf->getName();
-
-        if (is_file($file)) {
-            $fileLen = filesize($file);
-
-            $headers = [
-                'Pragma' => 'public',
-                'Expires' => 0,
-                'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-                'Content-Description' => 'File Transfer',
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
-                'Content-Transfer-Encoding' => 'binary',
-                'Content-Length' => $fileLen
-            ];
-
-            foreach ($headers as $header => $data) {
-                $this->response->setHeader($header, $data);
-            }
-
-            $this->response->sendHeaders();
-            @readfile($file);
-        }
-
-        //$this->redirect('list');
-    }
-
-    /**
      * Generate Number
      *
      * @param \Extcode\Cart\Domain\Model\Order\Item $orderItem
@@ -492,27 +259,6 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     }
 
     /**
-     * Generate Pdf Document
-     *
-     * @param \Extcode\Cart\Domain\Model\Order\Item $orderItem
-     * @param string $pdfType
-     */
-    protected function generatePdfDocument(\Extcode\Cart\Domain\Model\Order\Item $orderItem, $pdfType)
-    {
-        $extensionManagerUtility = $this->objectManager->get(
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class
-        );
-
-        if ($extensionManagerUtility->isLoaded('cart_pdf')) {
-            $pdfService = $this->objectManager->get(
-                \Extcode\CartPdf\Service\PdfService::class
-            );
-
-            $pdfService->createPdf($orderItem, $pdfType);
-        }
-    }
-
-    /**
      * Build TSFE
      *
      * @param int $pid Page Id
@@ -539,11 +285,9 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     }
 
     /**
-     * prepare payment status for select box
-     *
-     * @return array
+     * prepare payment status for select box and assign to view
      */
-    public function getPaymentStatus()
+    public function assignPaymentStatus()
     {
         $paymentStatusArray = [];
 
@@ -565,15 +309,14 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             );
             $paymentStatusArray[] = $paymentStatus;
         }
-        return $paymentStatusArray;
+
+        $this->view->assign('paymentStatus', $paymentStatusArray);
     }
 
     /**
-     * prepare shipping status for select box
-     *
-     * @return array
+     * prepare shipping status for select box and assign to view
      */
-    public function getShippingStatus()
+    public function assignShippingStatus()
     {
         $shippingStatusArray = [];
 
@@ -595,6 +338,7 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             );
             $shippingStatusArray[] = $shippingStatus;
         }
-        return $shippingStatusArray;
+
+        $this->view->assign('shippingStatus', $shippingStatusArray);
     }
 }

@@ -92,7 +92,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * Action initialize
      */
-    public function initializeAction()
+    protected function initializeAction()
     {
         $this->pluginSettings = $this->configurationManager->getConfiguration(
             \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,

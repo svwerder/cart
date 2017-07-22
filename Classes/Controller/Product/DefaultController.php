@@ -1,6 +1,6 @@
 <?php
 
-namespace Extcode\Cart\Controller\Frontend;
+namespace Extcode\Cart\Controller\Product;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -16,112 +16,18 @@ namespace Extcode\Cart\Controller\Frontend;
  */
 
 /**
- * Product Controller
+ * Default Controller
  *
  * @author Daniel Lorenz <ext.cart@extco.de>
  */
-class ProductController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class DefaultController extends \Extcode\Cart\Controller\Product\ActionController
 {
-    /**
-     * Cart Utility
-     *
-     * @var \Extcode\Cart\Utility\CartUtility
-     */
-    protected $cartUtility;
-
-    /**
-     * productRepository
-     *
-     * @var \Extcode\Cart\Domain\Repository\Product\ProductRepository
-     */
-    protected $productRepository;
-
-    /**
-     * categoryRepository
-     *
-     * @var \Extcode\Cart\Domain\Repository\CategoryRepository
-     */
-    protected $categoryRepository;
-
     /**
      * Search Arguments
      *
      * @var array
      */
     protected $searchArguments;
-
-    /**
-     * Plugin Settings
-     *
-     * @var array
-     */
-    protected $pluginSettings;
-
-    /**
-     * @param \Extcode\Cart\Utility\CartUtility $cartUtility
-     */
-    public function injectCartUtility(
-        \Extcode\Cart\Utility\CartUtility $cartUtility
-    ) {
-        $this->cartUtility = $cartUtility;
-    }
-
-    /**
-     * @param \Extcode\Cart\Domain\Repository\Product\ProductRepository $productRepository
-     */
-    public function injectProductRepository(
-        \Extcode\Cart\Domain\Repository\Product\ProductRepository $productRepository
-    ) {
-        $this->productRepository = $productRepository;
-    }
-
-    /**
-     * @param \Extcode\Cart\Domain\Repository\CategoryRepository $categoryRepository
-     */
-    public function injectCategoryRepository(
-        \Extcode\Cart\Domain\Repository\CategoryRepository $categoryRepository
-    ) {
-        $this->categoryRepository = $categoryRepository;
-    }
-
-    /**
-     * Action initializer
-     */
-    protected function initializeAction()
-    {
-        $this->pluginSettings = $this->configurationManager->getConfiguration(
-            \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
-        );
-
-        if (TYPO3_MODE === 'BE') {
-            $pageId = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
-
-            $frameworkConfiguration =
-                $this->configurationManager->getConfiguration(
-                    \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
-                );
-            $persistenceConfiguration = ['persistence' => ['storagePid' => $pageId]];
-            $this->configurationManager->setConfiguration(
-                array_merge($frameworkConfiguration, $persistenceConfiguration)
-            );
-
-            $arguments = $this->request->getArguments();
-            if ($arguments['search']) {
-                $this->searchArguments = $arguments['search'];
-            }
-        }
-
-        if (!empty($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE'])) {
-            static $cacheTagsSet = false;
-
-            /** @var $typoScriptFrontendController \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-            $typoScriptFrontendController = $GLOBALS['TSFE'];
-            if (!$cacheTagsSet) {
-                $typoScriptFrontendController->addCacheTags(['tx_cart']);
-                $cacheTagsSet = true;
-            }
-        }
-    }
 
     /**
      * Create the demand object which define which records will get shown
@@ -154,7 +60,6 @@ class ProductController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
     /**
      * @param \Extcode\Cart\Domain\Model\Dto\Product\ProductDemand $demand
-     * @param array $settings
      */
     protected function addCategoriesToDemandObjectFromSettings(&$demand)
     {
@@ -165,21 +70,21 @@ class ProductController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                 true
             );
 
-            $categories = [];
+            $demand->setCategories($selectedCategories);
+
+            $recursiveCategories = [];
 
             if ($this->settings['listSubcategories']) {
                 foreach ($selectedCategories as $selectedCategory) {
                     $category = $this->categoryRepository->findByUid($selectedCategory);
-                    $categories = array_merge(
-                        $categories,
+                    $recursiveCategories = array_merge(
+                        $recursiveCategories,
                         $this->categoryRepository->findSubcategoriesRecursiveAsArray($category)
                     );
                 }
-            } else {
-                $categories = $selectedCategories;
-            }
 
-            $demand->setCategories($categories);
+                $demand->setCategories($recursiveCategories);
+            }
         }
     }
 
@@ -255,47 +160,5 @@ class ProductController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->view->assign('product', $product);
 
         $this->assignCurrencyTranslationData();
-    }
-
-    /**
-     * action teaser
-     */
-    public function teaserAction()
-    {
-        $products = $this->productRepository->findByUids($this->settings['productUids']);
-        $this->view->assign('products', $products);
-
-        $this->assignCurrencyTranslationData();
-    }
-
-    /**
-     * action flexform
-     */
-    public function flexformAction()
-    {
-        $this->contentObj = $this->configurationManager->getContentObject();
-        $contentId = $this->contentObj->data['uid'];
-
-        $this->view->assign('contentId', $contentId);
-    }
-
-    /**
-     * assigns currency translation array to view
-     */
-    protected function assignCurrencyTranslationData()
-    {
-        if (TYPO3_MODE === 'FE') {
-            $currencyTranslationData = [];
-
-            $cart = $this->cartUtility->getCartFromSession($this->settings['cart'], $this->pluginSettings);
-
-            if ($cart) {
-                $currencyTranslationData['currencyCode'] = $cart->getCurrencyCode();
-                $currencyTranslationData['currencySign'] = $cart->getCurrencySign();
-                $currencyTranslationData['currencyTranslation'] = $cart->getCurrencyTranslation();
-            }
-
-            $this->view->assign('currencyTranslationData', $currencyTranslationData);
-        }
     }
 }

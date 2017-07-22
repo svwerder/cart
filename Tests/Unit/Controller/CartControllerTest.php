@@ -38,11 +38,6 @@ class CartControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected $view = null;
 
     /**
-     * @var \Extcode\Cart\Domain\Repository\Product\CouponRepository|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $couponRepository = null;
-
-    /**
      * @var \Extcode\Cart\Utility\CartUtility
      */
     protected $cartUtility;
@@ -55,7 +50,7 @@ class CartControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->setUpConfiguration();
 
         $this->subject = $this->getAccessibleMock(
-            \Extcode\Cart\Controller\CartController::class,
+            \Extcode\Cart\Controller\Cart\DefaultController::class,
             ['dummy']
         );
 
@@ -70,15 +65,6 @@ class CartControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             \TYPO3\CMS\Extbase\Mvc\View\ViewInterface::class
         );
         $this->inject($this->subject, 'view', $this->view);
-
-        $this->couponRepository = $this->getMock(
-            \Extcode\Cart\Domain\Repository\Product\CouponRepository::class,
-            [],
-            [],
-            '',
-            false
-        );
-        $this->inject($this->subject, 'couponRepository', $this->couponRepository);
 
         $parserUtility = $this->getParserUtility();
         $this->inject($this->subject, 'parserUtility', $parserUtility);
@@ -135,7 +121,10 @@ class CartControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->inject($cartUtility, 'sessionHandler', $sessionHandler);
 
         $mockedObjectManager = clone $this->mockedObjectManager;
-        $mockedObjectManager->method('get')->willReturn(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extcode\Cart\Domain\Model\Cart\Cart::class, []));
+        $mockedObjectManager->method('get')->willReturn(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \Extcode\Cart\Domain\Model\Cart\Cart::class,
+            []
+        ));
         $this->inject($cartUtility, 'objectManager', $mockedObjectManager);
 
         return $cartUtility;

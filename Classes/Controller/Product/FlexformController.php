@@ -1,6 +1,6 @@
 <?php
 
-namespace Extcode\Cart\Controller;
+namespace Extcode\Cart\Controller\Product;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -16,10 +16,20 @@ namespace Extcode\Cart\Controller;
  */
 
 /**
- * Product Controller
+ * Flexform Controller
  *
  * @author Daniel Lorenz <ext.cart@extco.de>
  */
-class ProductController extends \Extcode\Cart\Controller\Frontend\ProductController
+class FlexformController extends \Extcode\Cart\Controller\Product\ActionController
 {
+    /**
+     * Action show
+     */
+    public function showAction()
+    {
+        $this->contentObj = $this->configurationManager->getContentObject();
+        $contentId = $this->contentObj->data['uid'];
+
+        $this->view->assign('contentId', $contentId);
+    }
 }

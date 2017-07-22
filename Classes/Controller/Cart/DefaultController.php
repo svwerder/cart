@@ -1,6 +1,6 @@
 <?php
 
-namespace Extcode\Cart\Controller;
+namespace Extcode\Cart\Controller\Cart;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -16,11 +16,11 @@ namespace Extcode\Cart\Controller;
  */
 
 /**
- * Cart Controller
+ * Default Controller
  *
  * @author Daniel Lorenz <ext.cart@extco.de>
  */
-class CartController extends \Extcode\Cart\Controller\Cart\ActionController
+class DefaultController extends \Extcode\Cart\Controller\Cart\ActionController
 {
     /**
      * GpValues
@@ -34,7 +34,6 @@ class CartController extends \Extcode\Cart\Controller\Cart\ActionController
      *
      * @var array
      */
-    protected $taxClasses = [];
 
     /**
      * Action Show Cart
