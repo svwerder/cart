@@ -176,28 +176,16 @@ class OrderUtility
         $this->cart = $cart;
         $this->orderItem = $orderItem;
 
-        $orderItem->setPid($this->storagePid);
+        $this->orderItem->setPid($this->storagePid);
 
-        $orderItem->setFeUser((int)$GLOBALS['TSFE']->fe_user->user['uid']);
+        $this->orderItem->setFeUser((int)$GLOBALS['TSFE']->fe_user->user['uid']);
 
-        $orderItem->setCurrency($pluginSettings['settings']['format']['currency']['currencySign']);
-        $orderItem->setCurrencyCode($this->cart->getCurrencyCode());
-        $orderItem->setCurrencySign($this->cart->getCurrencySign());
-        $orderItem->setCurrencyTranslation($this->cart->getCurrencyTranslation());
-        $orderItem->setGross($this->cart->getGross());
-        $orderItem->setNet($this->cart->getNet());
-        $orderItem->setTotalGross($this->cart->getTotalGross());
-        $orderItem->setTotalNet($this->cart->getTotalNet());
+        $this->setOrderItemPrices($pluginSettings);
 
-        $billingAddress->setPid($this->storagePid);
-        $orderItem->setBillingAddress($billingAddress);
-        if ($shippingAddress && !$shippingAddress->_isDirty()) {
-            $shippingAddress->setPid($this->storagePid);
-            $orderItem->setShippingAddress($shippingAddress);
-        }
+        $this->setOrderItemAdresses($billingAddress, $shippingAddress);
 
-        if (!$orderItem->_isDirty()) {
-            $this->orderItemRepository->add($orderItem);
+        if (!$this->orderItem->_isDirty()) {
+            $this->orderItemRepository->add($this->orderItem);
 
             $this->addTaxClasses();
 
@@ -1112,6 +1100,38 @@ class OrderUtility
             );
 
             $pdfService->createPdf($orderItem, $pdfType);
+        }
+    }
+
+    /**
+     * @param array $pluginSettings
+     */
+    protected function setOrderItemPrices(array $pluginSettings)
+    {
+        $this->orderItem->setCurrency($pluginSettings['settings']['format']['currency']['currencySign']);
+        $this->orderItem->setCurrencyCode($this->cart->getCurrencyCode());
+        $this->orderItem->setCurrencySign($this->cart->getCurrencySign());
+        $this->orderItem->setCurrencyTranslation($this->cart->getCurrencyTranslation());
+        $this->orderItem->setGross($this->cart->getGross());
+        $this->orderItem->setNet($this->cart->getNet());
+        $this->orderItem->setTotalGross($this->cart->getTotalGross());
+        $this->orderItem->setTotalNet($this->cart->getTotalNet());
+    }
+
+    /**
+     * @param \Extcode\Cart\Domain\Model\Order\Address $billingAddress
+     * @param \Extcode\Cart\Domain\Model\Order\Address $shippingAddress
+     */
+    protected function setOrderItemAdresses(
+        \Extcode\Cart\Domain\Model\Order\Address $billingAddress,
+        \Extcode\Cart\Domain\Model\Order\Address $shippingAddress
+    ) {
+        $billingAddress->setPid($this->storagePid);
+        $this->orderItem->setBillingAddress($billingAddress);
+
+        if ($shippingAddress && !$shippingAddress->_isDirty()) {
+            $shippingAddress->setPid($this->storagePid);
+            $this->orderItem->setShippingAddress($shippingAddress);
         }
     }
 }

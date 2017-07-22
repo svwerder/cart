@@ -24,20 +24,6 @@ use TYPO3\CMS\Core\SingletonInterface;
 class MailHandler implements SingletonInterface
 {
     /**
-     * Extension Name
-     *
-     * @var string
-     */
-    protected $extensionName = 'Cart';
-
-    /**
-     * Plugin Name
-     *
-     * @var string
-     */
-    protected $pluginName = 'Cart';
-
-    /**
      * Object Manager
      *
      * @var \TYPO3\CMS\Extbase\Object\ObjectManager
@@ -114,7 +100,7 @@ class MailHandler implements SingletonInterface
         $pluginSettings =
             $this->configurationManager->getConfiguration(
                 \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
-                $this->extensionName
+                'Cart'
             );
 
         $this->setPluginSettings($pluginSettings);
@@ -226,15 +212,16 @@ class MailHandler implements SingletonInterface
     /**
      * Send a Mail to Buyer
      *
-     * @param \Extcode\Cart\Domain\Model\Order\Item $orderItem Order Item
-     * @param \Extcode\Cart\Domain\Model\Order\Address $billingAddress Billing Address
-     * @param \Extcode\Cart\Domain\Model\Order\Address $shippingAddress Shipping Address
+     * @param \Extcode\Cart\Domain\Model\Order\Item $orderItem
      */
     public function sendBuyerMail(
-        \Extcode\Cart\Domain\Model\Order\Item $orderItem,
-        \Extcode\Cart\Domain\Model\Order\Address $billingAddress,
-        \Extcode\Cart\Domain\Model\Order\Address $shippingAddress = null
+        \Extcode\Cart\Domain\Model\Order\Item $orderItem
     ) {
+        $billingAddress = $orderItem->getBillingAddress();
+        if ($billingAddress instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
+            $billingAddress = $billingAddress->_loadRealInstance();
+        }
+
         if (empty($this->buyerEmailFrom) || empty($billingAddress->getEmail())) {
             return;
         }
@@ -270,15 +257,16 @@ class MailHandler implements SingletonInterface
     /**
      * Send a Mail to Seller
      *
-     * @param \Extcode\Cart\Domain\Model\Order\Item $orderItem Order Item
-     * @param \Extcode\Cart\Domain\Model\Order\Address $billingAddress Billing Address
-     * @param \Extcode\Cart\Domain\Model\Order\Address $shippingAddress Shipping Address
+     * @param \Extcode\Cart\Domain\Model\Order\Item $orderItem
      */
     public function sendSellerMail(
-        \Extcode\Cart\Domain\Model\Order\Item $orderItem,
-        \Extcode\Cart\Domain\Model\Order\Address $billingAddress,
-        \Extcode\Cart\Domain\Model\Order\Address $shippingAddress = null
+        \Extcode\Cart\Domain\Model\Order\Item $orderItem
     ) {
+        $billingAddress = $orderItem->getBillingAddress();
+        if ($billingAddress instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
+            $billingAddress = $billingAddress->_loadRealInstance();
+        }
+
         if (empty($this->sellerEmailFrom) || empty($this->sellerEmailTo)) {
             return;
         }
@@ -389,12 +377,12 @@ class MailHandler implements SingletonInterface
             $view->assign('cart', $this->cart);
             $view->assign('orderItem', $orderItem);
 
-            // ToDo: Remove assign $billingAddress and $shippingAddress to view. Both can be used in view through $orderItem.
-
+            // @depricated since Cart 4.1, will be removed in Cart 5.0
             if ($orderItem->getBillingAddress()) {
                 $view->assign('billingAddress', $orderItem->getBillingAddress());
             }
 
+            // @depricated since Cart 4.1, will be removed in Cart 5.0
             if ($orderItem->getShippingAddress()) {
                 $view->assign('shippingAddress', $orderItem->getShippingAddress());
             }

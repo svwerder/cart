@@ -1,0 +1,16 @@
+.. ==================================================
+.. FOR YOUR INFORMATION
+.. --------------------------------------------------
+.. -*- coding: utf-8 -*- with BOM.
+
+4.1.0 - 22.07.2017
+------------------
+
+Diese Version bringt eine Überarbeitung des MailHandlers mit sich. Bisher mussten neben dem Bestelldatensatz auch
+die Rechnungs- und Versandadresse explizit an diesen Handler übergeben werden. Ds ist daher nicht nötig und vereinfacht
+nebenbei die Lesbarkeit des Codes.
+
+.. IMPORTANT::
+   In der Version 5.0.0 werden die beiden Variablen *billingAddress* und *shippingAddress* nicht mehr direkt in den
+   Mail-Templates zur Verfügung stehen. Diese können aber über *orderItem.billingAddress* und *orderItem.shippingAddress*
+   weiterhin genutzt werden.

@@ -502,6 +502,14 @@ class Item extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
+     * Remove Billing Address
+     */
+    public function removeBillingAddress()
+    {
+        $this->billingAddress = null;
+    }
+
+    /**
      * Gets Shipping Address
      *
      * @return \Extcode\Cart\Domain\Model\Order\Address
@@ -512,7 +520,7 @@ class Item extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * Set Shopping Address
+     * Set Shipping Address
      *
      * @param \Extcode\Cart\Domain\Model\Order\Address $shippingAddress
      */
@@ -522,7 +530,7 @@ class Item extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * Remove Shopping Address
+     * Remove Shipping Address
      */
     public function removeShippingAddress()
     {
