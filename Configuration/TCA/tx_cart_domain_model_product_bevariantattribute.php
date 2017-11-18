@@ -178,7 +178,7 @@ return [
                         'new' => true,
                         'dragdrop' => false,
                         'sort' => true,
-                        'hide' => true,
+                        'hide' => false,
                         'delete' => true,
                         'localize' => true,
                     ]
