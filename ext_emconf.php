@@ -24,8 +24,8 @@ $EM_CONF[$_EXTKEY] = [
     'CGLcompliance_note' => null,
     'constraints' => [
         'depends' => [
-            'typo3' => '8.7.0-8.7.99',
-            'php' => '7.0.0'
+            'typo3' => '9.3.0-9.3.99',
+            'php' => '7.2.0-7.2.99'
         ],
         'conflicts' => [],
         'suggests' => [],
